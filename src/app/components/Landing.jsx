@@ -36,14 +36,14 @@ export default function Landing() {
                 <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 w-1 h-1 bg-[#6df2db] rounded-full"></div>
               </div>
             </div>
-            <p className='text-[16px] text-[#a9acae]'>Welcome to YgoYaba. A platform that's bringing the night market on-chain</p>
+            <p className='text-[16px] text-[#a9acae]'>Welcome to YgoYaba. A platform that is bringing the night market on-chain</p>
             <div className='flex items-start justify-start gap-10 border-y-2 border-[#696E71] py-10 mt-10'>
                 <div>
                     <img src="/yaba-bg.png" alt="" className='min-w-[25vw] h-[35vh] rounded-md' />
                 </div>
                 <div className='text-left'>
                     <h3 className='text-[34px] text-[#6df2db] py-6'>What is YgoYaba?</h3>
-                    <p className='text-sm text-[#8b9093] mb-8'>Welcome to YgoYaba. We are thrilled to have you here! YgoYaba is an onchain platform that allows users to easily sell or donate their second-hand clothes and books. With a user-friendly interface and a wide range of features, YgoYaba makes it simple for anyone to list their items and connect with potential buyers or charitable organizations. Whether you're looking to make some extra cash or give back to the community, YgoYaba has you covered. And if you are here to shop, be sure that you'll find something you love at a cheap price or even free!</p>
+                    <p className='text-sm text-[#8b9093] mb-8'>Welcome to YgoYaba. We are thrilled to have you here. YgoYaba is an onchain platform that allows users to easily sell or donate their second-hand clothes and books. With a user-friendly interface and a wide range of features, YgoYaba makes it simple for anyone to list their items and connect with potential buyers or charitable organizations. Whether you are looking to make some extra cash or give back to the community, YgoYaba has you covered. And if you are here to shop, be sure that you will find something you love at a cheap price or even free.</p>
                     <div className='flex items-center justify-start cursor-pointer'>
                         <p className='text-medium text-[#6AECD9] border-b-2 border-[#696E71]'>Learn More</p>
                         <img src="/readmore.svg" alt="" className='w-6 h-4' />

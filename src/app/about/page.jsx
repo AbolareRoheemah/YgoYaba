@@ -24,7 +24,7 @@ export default function Landing() {
             <div className='flex items-start justify-start gap-10 border-y-2 border-[#696E71] py-10 mt-6'>
                 <div className='text-left'>
                     <h3 className='text-[34px] text-[#6df2db]'>What is YgoYaba?</h3>
-                    <p className='text-md text-[#8b9093] mb-8 leading-[30px]'>YgoYaba is a unique platform that allows users to easily sell or donate their second-hand clothes and books. With a user-friendly interface and a wide range of features, YgoYaba makes it simple for anyone to list their items and connect with potential buyers or charitable organizations. Whether you're looking to make some extra cash or give back to the community, YgoYaba has you covered. And if you are here to shop, be sure that you'll find something you love at a cheap price or even free!</p>
+                    <p className='text-md text-[#8b9093] mb-8 leading-[30px]'>YgoYaba is a unique platform that allows users to easily sell or donate their second-hand clothes and books. With a user-friendly interface and a wide range of features, YgoYaba makes it simple for anyone to list their items and connect with potential buyers or charitable organizations. Whether you are looking to make some extra cash or give back to the community, YgoYaba has you covered. And if you are here to shop, be sure that you will find something you love at a cheap price or even free</p>
                     <h3 className='text-[34px] text-[#6df2db] py-6'>Why Use YgoYaba?</h3>
                     <ul className='text-md text-[#8b9093] mb-8 list-disc pl-5 text-left'>
                         <li className='py-2'>Convenient and user-friendly interface for easy listing</li>
