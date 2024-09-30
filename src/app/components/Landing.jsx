@@ -1,11 +1,27 @@
-import React from 'react'
+'use client'
+import React, {useContext} from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { GlobalStateContext } from '../context/GlobalStateContext';
+
+
 export default function Landing() {
+  const router = useRouter();
+  const { account } = useContext(GlobalStateContext);
+
+  const handleRoute = async () => {
+    const ethereum = window.ethereum;
+    if(account) {
+      router.push("/sections")
+    } else {
+      alert("pls connect your walet")
+    }
+  }
 
   return (
     <div className='flex flex-col items-center justify-start gap-2 pt-2 px-20 pb-20 h-screen relative'>
         <div className='absolute inset-0 bg-[#0a0a0a] opacity-80'></div>
-        <div className="flex flex-col items-center justify-center my-12 relative z-10">
+        <div className="flex flex-col items-center justify-center mb-12 relative z-10">
             <div className="w-6 h-10 border-2 border-[#6df2db] rounded-full shadow-lg flex items-start justify-center cursor-pointer">
             <div className='w-[0.5vw] h-[0.5vw] mt-2 rounded-full bg-[#6df2db]'></div>
             </div>
@@ -34,10 +50,10 @@ export default function Landing() {
                     </div>
                 </div>
             </div>
-        <div className='flex items-center justify-between gap-4 bg-[#6ff6d7] py-4 px-8 text-[#000] rounded-full font-medium mt-10 cursor-pointer'>
-            <p>Connect Wallet</p>
-            <img src="/view.svg" alt="" width={24} height={24} />
-        </div>
+            <div className='flex items-center justify-between gap-4 bg-[#6ff6d7] py-4 px-8 text-[#000] rounded-full font-medium cursor-pointer mt-8' onClick={handleRoute}>
+              <p>Get Started</p>
+              <img src="/view.svg" alt="" width={24} height={24} />
+          </div>
         </div>
 
     </div>

@@ -30,7 +30,7 @@ export default function Works() {
                         </div>
                         <div className='flex items-start justify-start gap-4 my-4'>
                             {/* <button className='border-[#6EF4E6] border-2 px-6 py-2'>Sell</button> */}
-                            <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={() => {router.push("/addCloth")}}>Add Item</button>
+                            <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={() => {router.push("/addItem")}}>Add Item</button>
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ export default function Works() {
                         </div>
                         <div className='flex items-start justify-start gap-4 my-4'>
                             {/* <button className='border-[#6EF4E6] border-2 px-6 py-2'>Sell</button> */}
-                            <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={() => {router.push("/addBook")}}>Add Item</button>
+                            <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={() => {router.push("/addItem")}}>Add Item</button>
                         </div>
                     </div>
                 </div>

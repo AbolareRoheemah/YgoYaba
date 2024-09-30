@@ -1,6 +1,8 @@
 'use client'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
+import { createPublicClient, http } from "viem";
+import { scrollSepolia } from "viem/chains";
 
 export default function Createitem() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -34,6 +36,23 @@ export default function Createitem() {
     const newLocation = e.target.value;
     setItem({...item, location: newLocation});
   };
+
+  const interact = async () => {
+    const client = createPublicClient({
+      chain: scrollSepolia,
+      transport: http("https://scroll-sepolia.g.alchemy.com/v2/yGouDJNdYc-mbzx5nfkfr6a_tF8X9U1M"),
+    });
+    
+    const block = await client.getBlock({
+      blockNumber: 123456n,
+    });
+    
+    console.log(block);
+  }
+
+  useEffect(() => {
+    interact()
+  })
 
   return (
     <div className='min-h-screen flex flex-col py-8 px-40 items-center justify-start'>

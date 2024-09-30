@@ -1,11 +1,17 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/navigation';
+import useStorage from "../hooks/useStorage"
+import useIntegrate from '../hooks/useIntegrate';
+import { GlobalStateContext } from '../context/GlobalStateContext';
 
 export default function Works() {
     const router = useRouter();
+    const { getUploadedFile } = useStorage();
     const [activeTab, setActiveTab] = useState('cloths');
-    const clothes = [
+    const { hash } = useContext(GlobalStateContext);
+    const { buyItem, getAllItems } = useIntegrate();
+    const [clothes, setClothes] = useState([
         {
             img: "/shirt.jpg",
             type: "Male Shirt",
@@ -36,8 +42,8 @@ export default function Works() {
             type: "Female Shirt",
             price: "3"
         },
-    ]
-    const books = [
+    ])
+    const [books, setBooks] = useState([
         {
             img: "/novel.jpg",
             type: "Fiction Novel",
@@ -68,18 +74,34 @@ export default function Works() {
             type: "Story Book",
             price: "5"
         },
-    ]
+    ])
 
     const handleGetItem = (event, item) => {
         event.preventDefault;
         console.log({item})
     }
 
+    const handleGetAllItems = async () => {
+        console.log("get alllll")
+        const items = await getAllItems();
+        console.log("items in allItems page", items)
+        // for (let index = 0; index < hash.length; index++) {
+        //     console.log("get inn")
+        //     const file = await getUploadedFile(hash[index])
+        //     console.log("get all", file)
+        //     setClothes([...clothes, file])
+        // }
+    }
+
+    useEffect(() => {
+        // handleGetAllItems()
+    }, [])
+
   return (
     <div className='works-bg flex flex-col items-center justify-start gap-2 pt-2 px-20 pb-20 h-screen relative'>
         <div className='flex flex-col items-center justify-start gap-2 text-center relative z-10'>
             <div className="relative inline-block mt-8">
-              <p className='text-[36px] font-medium text-[#6df2db]'>Happy Shopping</p>
+              <p className='text-[36px] font-medium text-[#6df2db]' onClick={handleGetAllItems}>Happy Shopping</p>
               <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#6df2db] rounded-full">
                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1 h-1 bg-[#6df2db] rounded-full"></div>
                 <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/2 w-1 h-1 bg-[#6df2db] rounded-full"></div>

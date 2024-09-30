@@ -1,9 +1,18 @@
 'use client'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
+import useIntegrate from '../hooks/useIntegrate';
+import { useRouter } from 'next/navigation';
+import { GlobalStateContext } from '../context/GlobalStateContext';
+import useStorage from "../hooks/useStorage"
+import { Web3ReactProvider } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
 
 export default function Createitem() {
+  const router = useRouter();
+  const { account, hash, setHash } = useContext(GlobalStateContext);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [item, setItem] = useState({
     itemName: '',
     itemImage: '',
@@ -17,6 +26,12 @@ export default function Createitem() {
   });
 
   const fileInputRef = useRef(null);
+  const { listItem } = useIntegrate();
+  const { uploadJson } = useStorage();
+
+  function getLibrary(provider) {
+    return new Web3Provider(provider)
+  }
 
   const handleImageUpload = (item) => {
     const file = item.target.files?.[0];
@@ -24,7 +39,7 @@ export default function Createitem() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target?.result);
-        item.itemImage = e.target?.result;
+        setItem({...item, itemImage: e.target?.result});
       };
       reader.readAsDataURL(file);
     }
@@ -35,7 +50,29 @@ export default function Createitem() {
     setItem({...item, location: newLocation});
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true); 
+    console.log("here first", item)
+    if (!account) {
+      setLoading(false)
+      alert("Please connect your wallet to submit the item.");
+      return;
+    }
+    if (item.listingType === "for sale" && item.price) {
+      await listItem(item.itemName, item.price, item.itemImage);
+    } else {
+      await listItem(item.itemName, 0, item.itemImage)
+    }
+    const ipfshash = await uploadJson(item)
+    setHash([...hash, ipfshash])
+    console.log("here", item)
+    setLoading(false);
+    router.push("/allItems")
+  };
+
   return (
+    // <Web3ReactProvider getLibrary={getLibrary}>
     <div className='min-h-screen flex flex-col py-8 px-40 items-center justify-start'>
         <div className="relative inline-block mb-6">
               <p className='text-[36px] font-medium text-[#6df2db]'>Lets Spice Things Up</p>
@@ -59,6 +96,12 @@ export default function Createitem() {
                 accept="image/*"
                 onChange={handleImageUpload}
             />
+            <button 
+                className='mt-2 bg-[#6EF4E6] text-[#000] py-2 px-4 rounded'
+                onClick={() => fileInputRef.current.click()}
+            >
+                Change Image
+            </button>
             </div>
         ) : (
             <div className='flex flex-col items-center justify-center border-[1px] border-[#6EF4E6] rounded-md p-2 w-full form-item'>
@@ -149,7 +192,36 @@ export default function Createitem() {
           </div>
         )}
         <div className='flex items-center justify-center w-full mt-6'>
-            <button className='text-[#000] text-[16px] font-normal py-4 px-4 rounded-md w-full bg-[#6EF4E6]'>Add item</button>
+            <button className='text-[#000] text-[16px] font-normal py-4 px-4 rounded-md w-full bg-[#6EF4E6]' onClick={(e) => handleSubmit(e)}>
+              {!loading ? (<span>Add Item</span>):
+              <div className="loader">
+              <div className="spinner"></div>
+              <style jsx>{`
+                .loader {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  height: 100vh;
+                  background-color: #f8f9fa;
+                }
+                .spinner {
+                  border: 8px solid #f3f3f3; /* Light grey */
+                  border-top: 8px solid #3498db; /* Blue */
+                  border-radius: 50%;
+                  width: 60px;
+                  height: 60px;
+                  animation: spin 1s linear infinite;
+                }
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+              <p>Loading...</p>
+            </div>}
+            </button>
+
         </div>
       </div>
     </div>
