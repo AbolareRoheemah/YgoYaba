@@ -2,15 +2,16 @@
 import React, {useContext} from 'react'
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { GlobalStateContext } from '../context/GlobalStateContext';
+// import { GlobalStateContext } from '../context/GlobalStateContext';
+import {useAccount} from "wagmi"
 
 
 export default function Landing() {
   const router = useRouter();
-  const { account } = useContext(GlobalStateContext);
+  const { account } = useAccount();
 
   const handleRoute = async () => {
-    const ethereum = window.ethereum;
+    // const ethereum = window.ethereum;
     if(account) {
       router.push("/sections")
     } else {
