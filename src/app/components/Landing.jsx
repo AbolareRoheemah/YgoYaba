@@ -8,11 +8,11 @@ import {useAccount} from "wagmi"
 
 export default function Landing() {
   const router = useRouter();
-  const { account } = useAccount();
+  const { address } = useAccount();
 
   const handleRoute = async () => {
     // const ethereum = window.ethereum;
-    if(account) {
+    if(address) {
       router.push("/sections")
     } else {
       alert("pls connect your walet")
