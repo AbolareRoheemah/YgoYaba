@@ -1,7 +1,10 @@
 'use client'
 import React, { useState, useRef, useContext } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
-import useIntegrate from '../hooks/useIntegrate';
+
+import { useReadContract, useBalance, useAccount, useWriteContract } from 'wagmi'
+// import useIntegrate from '../hooks/useIntegrate';
+import useWagmi from '../hooks/useWagmi';
 import { useRouter } from 'next/navigation';
 import { GlobalStateContext } from '../context/GlobalStateContext';
 import useStorage from "../hooks/useStorage"
@@ -10,7 +13,9 @@ import { Web3Provider } from '@ethersproject/providers'
 
 export default function Createitem() {
   const router = useRouter();
-  const { account, hash, setHash } = useContext(GlobalStateContext);
+  // const { account, hash, setHash } = useContext(GlobalStateContext);
+
+  const { address } = useAccount();
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState({
@@ -26,7 +31,7 @@ export default function Createitem() {
   });
 
   const fileInputRef = useRef(null);
-  const { listItem } = useIntegrate();
+  const { listItem, isPending } = useWagmi();
   const { uploadJson } = useStorage();
 
   function getLibrary(provider) {
@@ -53,22 +58,25 @@ export default function Createitem() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true); 
-    console.log("here first", item)
-    if (!account) {
+    if (!address) {
       setLoading(false)
       alert("Please connect your wallet to submit the item.");
       return;
     }
     if (item.listingType === "for sale" && item.price) {
       await listItem(item.itemName, item.price, item.itemImage);
+      setLoading(false)
+      router.push("/allItems")
     } else {
       await listItem(item.itemName, 0, item.itemImage)
+      setLoading(false)
+      router.push("/allItems")
     }
-    const ipfshash = await uploadJson(item)
-    setHash([...hash, ipfshash])
-    console.log("here", item)
-    setLoading(false);
-    router.push("/allItems")
+    // const ipfshash = await uploadJson(item)
+    // setHash([...hash, ipfshash])
+    // console.log("here", item)
+    // setLoading(false);
+    // router.push("/allItems")
   };
 
   return (
@@ -193,33 +201,8 @@ export default function Createitem() {
         )}
         <div className='flex items-center justify-center w-full mt-6'>
             <button className='text-[#000] text-[16px] font-normal py-4 px-4 rounded-md w-full bg-[#6EF4E6]' onClick={(e) => handleSubmit(e)}>
-              {!loading ? (<span>Add Item</span>):
-              <div className="loader">
-              <div className="spinner"></div>
-              <style jsx>{`
-                .loader {
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  height: 100vh;
-                  background-color: #f8f9fa;
-                }
-                .spinner {
-                  border: 8px solid #f3f3f3; /* Light grey */
-                  border-top: 8px solid #3498db; /* Blue */
-                  border-radius: 50%;
-                  width: 60px;
-                  height: 60px;
-                  animation: spin 1s linear infinite;
-                }
-                @keyframes spin {
-                  0% { transform: rotate(0deg); }
-                  100% { transform: rotate(360deg); }
-                }
-              `}</style>
-              <p>Loading...</p>
-            </div>}
+              {!isPending ? (<span>Add Item</span>):
+              <p>Loading...</p>}
             </button>
 
         </div>

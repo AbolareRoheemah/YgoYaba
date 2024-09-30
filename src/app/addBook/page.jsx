@@ -47,7 +47,6 @@ export default function Createitem() {
       blockNumber: 123456n,
     });
     
-    console.log(block);
   }
 
   useEffect(() => {

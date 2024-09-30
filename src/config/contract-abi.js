@@ -1,6 +1,4 @@
-import { ethers, JsonRpcProvider } from 'ethers'
-
-const ABI = [
+export const abi = [
     {
       "inputs": [
         {
@@ -424,12 +422,3 @@ const ABI = [
       "type": "function"
     }
   ]
-
-const CONTRACT_ADDRESS = '0x70Af6C11d00dDf021b67d7A84687Bc654c7Ec18E'
-const ALCHEMY_RPC_URL = "https://scroll-sepolia.g.alchemy.com/v2/yGouDJNdYc-mbzx5nfkfr6a_tF8X9U1M"
-
-export function getContract(signer) {
-  const provider = new JsonRpcProvider(ALCHEMY_RPC_URL)
-  const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer || provider)
-  return contract
-}

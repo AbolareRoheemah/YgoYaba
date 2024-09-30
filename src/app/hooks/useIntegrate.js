@@ -6,7 +6,7 @@ import { GlobalStateContext } from '../context/GlobalStateContext';
 
 export default function useIntegrate() {
     const { items, setItems, signer } = useContext(GlobalStateContext);
-    const contractAddy = "0xE60c6075827eC63B721dc531FE32Ebfb9c581c99";
+    const contractAddy = "0x70Af6C11d00dDf021b67d7A84687Bc654c7Ec18E";
     const abi = [
         {
           "inputs": [

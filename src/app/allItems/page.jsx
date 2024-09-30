@@ -3,41 +3,53 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/navigation';
 import useStorage from "../hooks/useStorage"
 import useIntegrate from '../hooks/useIntegrate';
+import useWagmi from '../hooks/useWagmi';
 import { GlobalStateContext } from '../context/GlobalStateContext';
+import Modal from "../components/Modal"
+import { Dialog} from '@headlessui/react';
 
 export default function Works() {
+    const [openModal, setopenModal] = useState(false);
+    const [items, setItems] = useState(false);
     const router = useRouter();
     const { getUploadedFile } = useStorage();
     const [activeTab, setActiveTab] = useState('cloths');
     const { hash } = useContext(GlobalStateContext);
-    const { buyItem, getAllItems } = useIntegrate();
+    // const { buyItem, getAllItems } = useIntegrate();
+    const { buyItem, isPending, allItems } = useWagmi();
     const [clothes, setClothes] = useState([
         {
+            id: 1,
             img: "/shirt.jpg",
             type: "Male Shirt",
             price: "5"
         },
         {
+            id: 2,
             img: "/trouser.jpg",
             type: "Male Trouser",
             price: "Free"
         },
         {
+            id: 3,
             img: "/dress.jpg",
             type: "Gown",
             price: "2"
         },
         {
+            id: 4,
             img: "/dress1.jpg",
             type: "Single Top",
             price: "Free"
         },
         {
+            id: 5,
             img: "/gown.jpg",
             type: "Gown",
             price: "5"
         },
         {
+            id: 6,
             img: "/top1.jpg",
             type: "Female Shirt",
             price: "3"
@@ -45,46 +57,55 @@ export default function Works() {
     ])
     const [books, setBooks] = useState([
         {
+            id: 1,
             img: "/novel.jpg",
             type: "Fiction Novel",
             price: "5"
         },
         {
+            id: 2,
             img: "/storybook.jpg",
             type: "Economics Textbook",
             price: "Free"
         },
         {
+            id: 3,
             img: "/justbook.jpg",
             type: "Dictionary",
             price: "2"
         },
         {
+            id: 4,
             img: "/novel1.jpg",
             type: "Novel",
             price: "Free"
         },
         {
+            id: 5,
             img: "/books.jpg",
             type: "Magazine",
             price: "5"
         },
         {
+            id: 6,
             img: "/books.jpg",
             type: "Story Book",
             price: "5"
         },
     ])
 
-    const handleGetItem = (event, item) => {
-        event.preventDefault;
-        console.log({item})
+    const handleGetItem = async (event, item) => {
+        event.preventDefault();
+        await buyItem(item.id);
+
+        setopenModal(true)
     }
 
     const handleGetAllItems = async () => {
-        console.log("get alllll")
-        const items = await getAllItems();
-        console.log("items in allItems page", items)
+        const items = await allItems;
+        if (items && items.length) {
+            setItems([...items, items])
+        }
         // for (let index = 0; index < hash.length; index++) {
         //     console.log("get inn")
         //     const file = await getUploadedFile(hash[index])
@@ -93,8 +114,12 @@ export default function Works() {
         // }
     }
 
+    const handleopenModal = () => {
+        setopenModal(false)
+    }
+
     useEffect(() => {
-        // handleGetAllItems()
+        handleGetAllItems()
     }, [])
 
   return (
@@ -138,7 +163,8 @@ export default function Works() {
                                 </div>
                                 <p className='text-white text-[16px] text-left'>Price in YGY: {cloth.price}</p>
                                 <div className='flex items-start justify-start gap-4 my-4'>
-                                    <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={(e) => handleGetItem(e,cloth)}>Get Item</button>
+                                    <button className='border-[#6EF4E6] border-2 px-6 py-2' onClick={(e) => handleGetItem(e,cloth)}>{!isPending ? (<span>Get Item</span>):
+              <p>Loading...</p>}</button>
                                 </div>
                             </div>
                         </div>
@@ -169,6 +195,9 @@ export default function Works() {
                 )}
             </div>
         </div>
+        {openModal && 
+        <Dialog open={openModal} onClose={handleopenModal}><Modal onClose={handleopenModal} btnText="Close" successMsg="You have successfully purchased an item! Feel free to keep shopping. Happy Shopping" /></Dialog>
+        }
 
     </div>
   )
